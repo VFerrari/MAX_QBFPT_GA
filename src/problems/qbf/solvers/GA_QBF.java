@@ -60,7 +60,7 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 		Solution<Integer> solution = createEmptySol();
 		for (int locus = 0; locus < chromosome.size(); locus++) {
 			if (chromosome.get(locus) == 1) {
-				solution.add(new Integer(locus));
+				solution.add(locus);
 			}
 		}
 
@@ -119,7 +119,7 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 
 		long startTime = System.currentTimeMillis();
 		GA_QBF ga = new GA_QBF(1000, 100, 1.0 / 100.0, "instances/qbf100");
-		Solution<Integer> bestSol = ga.solve();
+		Solution<Integer> bestSol = ga.solve(1800.0);
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;

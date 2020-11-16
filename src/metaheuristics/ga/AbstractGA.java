@@ -154,7 +154,10 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * 
 	 * @return The best feasible solution obtained throughout all iterations.
 	 */
-	public Solution<F> solve() {
+	public Solution<F> solve(double maxTime) {
+		long startTime = System.currentTimeMillis();
+		long endTime;
+		double totalTime;
 
 		/* starts the initial population */
 		Population population = initializePopulation();
@@ -185,7 +188,12 @@ public abstract class AbstractGA<G extends Number, F> {
 				if (verbose)
 					System.out.println("(Gen. " + g + ") BestSol = " + bestSol);
 			}
+			
+			endTime   = System.currentTimeMillis();
+			totalTime = (endTime - startTime)/(double)1000;
 
+			//if it exceeded the time limit, break the loop
+			if(totalTime > maxTime) break;
 		}
 
 		return bestSol;
