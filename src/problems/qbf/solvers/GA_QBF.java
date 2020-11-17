@@ -30,8 +30,12 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	 * @throws IOException
 	 *             Necessary for I/O operations.
 	 */
-	public GA_QBF(Integer generations, Integer popSize, Double mutationRate, String filename) throws IOException {
-		super(new QBF(filename), generations, popSize, mutationRate);
+	public GA_QBF(Integer generations, 
+				  Integer popSize, 
+				  Double mutationRate, 
+				  String filename,
+				  populationReplacement popMethod) throws IOException {
+		super(new QBF(filename), generations, popSize, mutationRate, popMethod);
 	}
 
 	/**
@@ -118,7 +122,7 @@ public class GA_QBF extends AbstractGA<Integer, Integer> {
 	public static void main(String[] args) throws IOException {
 
 		long startTime = System.currentTimeMillis();
-		GA_QBF ga = new GA_QBF(1000, 100, 1.0 / 100.0, "instances/qbf100");
+		GA_QBF ga = new GA_QBF(1000, 100, 1.0 / 100.0, "instances/qbf080", populationReplacement.STSTATE);
 		Solution<Integer> bestSol = ga.solve(1800.0);
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();

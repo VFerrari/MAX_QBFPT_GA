@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import metaheuristics.ga.AbstractGA.Chromosome;
 import problems.qbf.solvers.GA_QBF;
 import problems.qbfpt.QBFPT;
 import solutions.Solution;
@@ -39,8 +38,12 @@ public class GA_QBFPT extends GA_QBF {
 	 * @throws IOException
 	 *             Necessary for I/O operations.
 	 */
-	public GA_QBFPT(Integer generations, Integer popSize, Double mutationRate, String filename) throws IOException {
-		super(generations, popSize, mutationRate, filename);
+	public GA_QBFPT(Integer generations, 
+			        Integer popSize, 
+			        Double mutationRate, 
+			        String filename,
+			        populationReplacement popMethod) throws IOException {
+		super(generations, popSize, mutationRate, filename, popMethod);
 		
         // Instantiate QBFPT problem, store T and update objective reference.
         QBFPT qbfpt = new QBFPT(filename);
@@ -92,7 +95,7 @@ public class GA_QBFPT extends GA_QBF {
      */
 	public static void main(String[] args) throws IOException {
 		long startTime = System.currentTimeMillis();
-		GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf060");
+		GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf060", populationReplacement.ELITE);
 		Solution<Integer> bestSol = ga.solve(1800.0);
 		System.out.println("maxVal = " + bestSol);
 		long endTime = System.currentTimeMillis();
