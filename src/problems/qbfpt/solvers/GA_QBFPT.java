@@ -1,6 +1,8 @@
 package problems.qbfpt.solvers;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -94,12 +96,22 @@ public class GA_QBFPT extends GA_QBF {
      * A main method used for testing the GA metaheuristic.
      */
 	public static void main(String[] args) throws IOException {
-		long startTime = System.currentTimeMillis();
-		GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf060", populationReplacement.ELITE);
-		Solution<Integer> bestSol = ga.solve(1800.0);
-		System.out.println("maxVal = " + bestSol);
-		long endTime = System.currentTimeMillis();
-		long totalTime = endTime - startTime;
-		System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
+
+		ArrayList<String> instances = new ArrayList<String>(Arrays.asList("020", "040", "060", "080", "100", "200", "400"));
+		for (String instance : instances) {
+			long startTime = System.currentTimeMillis();
+
+			/* With Steady State */
+			GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf" + instance, populationReplacement.STSTATE);
+
+			/* With Diversity Maintenance */
+			Solution<Integer> bestSol = ga.solve(1800.0, true);
+
+			System.out.println("maxVal = " + bestSol);
+
+			long endTime = System.currentTimeMillis();
+			long totalTime = endTime - startTime;
+			System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
+		}
 	}
 }
