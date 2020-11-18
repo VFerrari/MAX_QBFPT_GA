@@ -44,8 +44,9 @@ public class GA_QBFPT extends GA_QBF {
 			        Integer popSize, 
 			        Double mutationRate, 
 			        String filename,
-			        populationReplacement popMethod) throws IOException {
-		super(generations, popSize, mutationRate, filename, popMethod);
+			        populationReplacement popMethod,
+				    Boolean divMaintenance) throws IOException {
+		super(generations, popSize, mutationRate, filename, popMethod, divMaintenance);
 		
         // Instantiate QBFPT problem, store T and update objective reference.
         QBFPT qbfpt = new QBFPT(filename);
@@ -102,10 +103,10 @@ public class GA_QBFPT extends GA_QBF {
 			long startTime = System.currentTimeMillis();
 
 			/* With Steady State */
-			GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf" + instance, populationReplacement.STSTATE);
+			GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf" + instance, populationReplacement.STSTATE, true);
 
 			/* With Diversity Maintenance */
-			Solution<Integer> bestSol = ga.solve(1800.0, true);
+			Solution<Integer> bestSol = ga.solve(1800.0);
 
 			System.out.println("maxVal = " + bestSol);
 
