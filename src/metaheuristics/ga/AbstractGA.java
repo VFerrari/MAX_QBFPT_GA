@@ -420,7 +420,7 @@ public abstract class AbstractGA<G extends Number, F> {
 			offsprings.add(bestChromosome);
 		}
 
-		return null;
+		return offsprings;
 	}
 	
 	/**
