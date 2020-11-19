@@ -102,10 +102,9 @@ public class GA_QBFPT extends GA_QBF {
 		for (String instance : instances) {
 			long startTime = System.currentTimeMillis();
 
-			/* With Steady State */
+			/* With Steady State and Diversity Maintenance */
 			GA_QBFPT ga = new GA_QBFPT(1000, 100, 1.0 / 100.0, "instances/qbf" + instance, populationReplacement.STSTATE, true);
 
-			/* With Diversity Maintenance */
 			Solution<Integer> bestSol = ga.solve(1800.0);
 
 			System.out.println("maxVal = " + bestSol);
