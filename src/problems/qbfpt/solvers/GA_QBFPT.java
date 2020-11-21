@@ -122,15 +122,22 @@ public class GA_QBFPT extends GA_QBF {
 	
 	public static void testAll(Integer generations, 
 						       Integer popSize, 
-						       Double mutationRate, 
+						       Double mutationRateInd, 
 						       populationReplacement popMethod,
 							   Boolean divMaintenance,
 							   Double maxTime) 
 					   throws IOException {
 				
 		String inst[] = {"020", "040", "060", "080", "100", "200", "400"};
+		Double mutationRate = mutationRateInd;
+		Integer size;
 		
 		for(String file : inst) {
+			if(mutationRateInd < 0.0) {
+				size = Integer.parseInt(file);
+				mutationRate = 1.0 / (float)size;
+			}
+				
 			GA_QBFPT.run(generations, popSize, mutationRate, 
 						 "instances/qbf" + file, popMethod,
 						 divMaintenance, maxTime);
@@ -149,12 +156,12 @@ public class GA_QBFPT extends GA_QBF {
 		
 		// Changeable parameters.
 		Integer popSize1 = 100, popSize2 = 50; 
-		Double mutationRate1 = 0.01, mutationRate2 = 0.1;
+		Double mutationRate1 = 0.01, mutationRate2 = -1.0;
 		
 		// Testing
 		GA_QBFPT.run(generations, popSize1, mutationRate1, 
 					 "instances/qbf020",
-					 populationReplacement.STSTATE,
+					 populationReplacement.ELITE,
 					 true, maxTime);
 		
 		/*

@@ -355,7 +355,7 @@ public abstract class AbstractGA<G extends Number, F> {
 				ArrayList<Integer> possibleCrosspoints;
 				possibleCrosspoints = xor_operation(parent1, parent2);
 				if (possibleCrosspoints.size() >= 2){
-					Collections.shuffle(possibleCrosspoints);
+					Collections.shuffle(possibleCrosspoints, rng);
 					crosspoint1 = possibleCrosspoints.get(0);
 					crosspoint2 = possibleCrosspoints.get(1);
 				}
