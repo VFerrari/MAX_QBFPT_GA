@@ -42,7 +42,7 @@ public abstract class AbstractGA<G extends Number, F> {
 	/**
 	 * a random number generator
 	 */
-	public static final Random rng = new Random(0);
+	public final Random rng = new Random(0);
 
 	/**
 	 * the objective function being optimized
