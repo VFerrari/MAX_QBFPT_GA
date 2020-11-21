@@ -1,8 +1,6 @@
 package problems.qbfpt.solvers;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -106,8 +104,7 @@ public class GA_QBFPT extends GA_QBF {
 					   throws IOException {
 
 		long startTime = System.currentTimeMillis();
-
-		/* With Steady State */
+		
 		GA_QBFPT ga = new GA_QBFPT(generations,
 								   popSize, 
 								   mutationRate,
@@ -115,9 +112,7 @@ public class GA_QBFPT extends GA_QBF {
 								   popMethod, 
 								   divMaintenance);
 
-		/* With Diversity Maintenance */
 		Solution<Integer> bestSol = ga.solve(maxTime);
-
 		System.out.println("maxVal = " + bestSol);
 
 		long endTime = System.currentTimeMillis();
@@ -158,7 +153,7 @@ public class GA_QBFPT extends GA_QBF {
 		
 		// Testing
 		GA_QBFPT.run(generations, popSize1, mutationRate1, 
-					 "instances/qbf100",
+					 "instances/qbf020",
 					 populationReplacement.STSTATE,
 					 true, maxTime);
 		
