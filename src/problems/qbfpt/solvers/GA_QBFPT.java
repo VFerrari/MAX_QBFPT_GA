@@ -63,8 +63,30 @@ public class GA_QBFPT extends GA_QBF {
 	protected Chromosome generateRandomChromosome() {
 
 		Chromosome chromosome = new Chromosome();
+		Integer e;
+		
+		// Generate
 		for (int i = 0; i < chromosomeSize; i++) {
 			chromosome.add(rng.nextInt(2));
+		}
+		
+		// Viabilize
+		for (int i = 0; i < chromosomeSize; i++) {
+			
+			// If the gene is active, check triples.
+			if(chromosome.get(i) == 0) continue;
+			
+			for (Integer[] t : T.get(i)) {
+				
+				// If the triple is active (infeasible), set random element as 0.
+				if (chromosome.get(t[0]) == 1 && 
+					chromosome.get(t[1]) == 1 &&
+					chromosome.get(t[2]) == 1) 
+				{
+					e = rng.nextInt(3);
+					chromosome.set(t[e], 0);
+				}
+			}
 		}
 
 		return chromosome;
@@ -171,8 +193,8 @@ public class GA_QBFPT extends GA_QBF {
 		
 		// Testing
 		GA_QBFPT.run(generations, popSize1, mutationRate1, 
-					 "instances/qbf020",
-					 populationReplacement.STSTATE,
+					 "instances/qbf200",
+					 populationReplacement.ELITE,
 					 true, maxTime);
 		
 		/*
