@@ -3,6 +3,7 @@ package problems.qbfpt.solvers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -54,6 +55,34 @@ public class GA_QBFPT extends GA_QBF {
         ObjFunction = qbfpt;
 	}
 	
+    /**
+     * Viabilizes chromosomes for QBFPT.
+     * Checks if a triple is being violated, and removes random element from said triple.
+     * @param ind Individual to be viabilized for QBFPT. 
+     * @return viable individual.
+     */
+    private Chromosome viabilize(Chromosome ind) {
+        Integer e, i;
+    	
+		for (i = 0; i < chromosomeSize; i++) {
+			
+			// If the gene is not active, ignore.
+			if(ind.get(i) == 0) continue;
+			
+			// Check triples
+			for (Integer[] t : T.get(i)) {
+				
+				// If the triple is active (infeasible), set random element as 0.
+				if (ind.get(t[0]) == 1 && ind.get(t[1]) == 1 && ind.get(t[2]) == 1) {
+					e = rng.nextInt(3);
+					ind.set(t[e], 0);
+				}
+			}
+		}
+    	
+    	return ind;
+    }
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -61,35 +90,15 @@ public class GA_QBFPT extends GA_QBF {
 	 */
 	@Override
 	protected Chromosome generateRandomChromosome() {
-
 		Chromosome chromosome = new Chromosome();
-		Integer e;
 		
 		// Generate
 		for (int i = 0; i < chromosomeSize; i++) {
 			chromosome.add(rng.nextInt(2));
 		}
 		
-		// Viabilize
-		for (int i = 0; i < chromosomeSize; i++) {
-			
-			// If the gene is active, check triples.
-			if(chromosome.get(i) == 0) continue;
-			
-			for (Integer[] t : T.get(i)) {
-				
-				// If the triple is active (infeasible), set random element as 0.
-				if (chromosome.get(t[0]) == 1 && 
-					chromosome.get(t[1]) == 1 &&
-					chromosome.get(t[2]) == 1) 
-				{
-					e = rng.nextInt(3);
-					chromosome.set(t[e], 0);
-				}
-			}
-		}
-
-		return chromosome;
+		// Viabilize and return
+		return viabilize(chromosome);
 	}
 	
 	/**
@@ -101,7 +110,7 @@ public class GA_QBFPT extends GA_QBF {
 	protected Double fitness(Chromosome chromosome) {
 		Solution<Integer> sol = decode(chromosome);
 				
-		return sol.cost - (isSolutionFeasible(sol) ? 0 : 1000000);
+		return sol.cost; //- (isSolutionFeasible(sol) ? 0 : 1000000);
 	}
 	
 	/**
@@ -123,6 +132,26 @@ public class GA_QBFPT extends GA_QBF {
     	
     	return feasible;
     }
+    
+    /**
+     * {@inheritDoc}
+     * 
+     * Viabilizes infeasible solutions.
+     */
+    protected Population selectPopulation(Population original, Population offsprings) {
+    	
+    	// Viabilize
+    	for(int i=0; i<offsprings.size(); i++) 
+    		offsprings.set(i, viabilize(offsprings.get(i)));
+    	
+    	// Select pop.
+		if(this.popMethod == populationReplacement.ELITE)
+			return elitism(offsprings);
+		else if(this.popMethod == populationReplacement.STSTATE)
+			return steadyState(original, offsprings);
+		
+		return offsprings;
+	}
 	
     /**
      * Run GA for QBFPT
