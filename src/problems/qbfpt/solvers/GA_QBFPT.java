@@ -3,6 +3,8 @@ package problems.qbfpt.solvers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.ArrayList;
+import java.util.HashSet;
 
 import problems.qbf.solvers.GA_QBF;
 import problems.qbfpt.QBFPT;
@@ -20,7 +22,7 @@ public class GA_QBFPT extends GA_QBF {
     /**
      * The set T of prohibited triples.
      */
-    private final Set<List<Integer>> T;
+    private final ArrayList<List<Integer[]>> T;
 
 	/**
 	 * Constructor for the GA_QBF class. The QBF objective function is passed as
@@ -52,6 +54,22 @@ public class GA_QBFPT extends GA_QBF {
         ObjFunction = qbfpt;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see metaheuristics.ga.AbstractGA#generateRandomChromosome()
+	 */
+	@Override
+	protected Chromosome generateRandomChromosome() {
+
+		Chromosome chromosome = new Chromosome();
+		for (int i = 0; i < chromosomeSize; i++) {
+			chromosome.add(rng.nextInt(2));
+		}
+
+		return chromosome;
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 * 
@@ -68,24 +86,17 @@ public class GA_QBFPT extends GA_QBF {
 	 * Check if any triple restriction is violated.
 	 */
     private boolean isSolutionFeasible(Solution<Integer> sol) {
-    	boolean feasible = true;
-        Integer e1, e2, e3;
+        boolean feasible = true;
+        Set<Integer> _sol = new HashSet<Integer>(sol);
                 
-    	for (List<Integer> t : T) {
-
-            /**
-             * Detach elements from (e1, e2, e3). They are stored as numbers 
-             * from [0, n-1] in sol., different than in T ([1, n]).
-             */
-            e1 = t.get(0) - 1;
-            e2 = t.get(1) - 1;
-            e3 = t.get(2) - 1;
-
-            // e1, e2 and e3 in solution -> infeasible.
-            if (sol.contains(e1) && sol.contains(e2) && sol.contains(e3)) {
-            	feasible = false;
-            	break;
-            }
+    	for (Integer e : sol) {
+    		for(Integer[] t : T.get(e)) {
+    			if(_sol.contains(t[0]) && _sol.contains(t[1]) && _sol.contains(t[2])) {
+    				feasible = false;
+    				break;
+    			}
+    		}
+    		if(!feasible) break;
         }
     	
     	return feasible;
@@ -161,7 +172,7 @@ public class GA_QBFPT extends GA_QBF {
 		// Testing
 		GA_QBFPT.run(generations, popSize1, mutationRate1, 
 					 "instances/qbf020",
-					 populationReplacement.ELITE,
+					 populationReplacement.STSTATE,
 					 true, maxTime);
 		
 		/*

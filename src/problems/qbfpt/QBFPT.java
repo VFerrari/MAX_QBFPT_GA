@@ -3,8 +3,7 @@ package problems.qbfpt;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
-import java.util.HashSet;
+import java.util.ArrayList;
 import problems.qbf.QBF;
 
 /**
@@ -20,7 +19,7 @@ public class QBFPT extends QBF {
     /**
      * The set T of prohibited triples.
      */
-    private final Set<List<Integer>> T;
+    private final ArrayList<List<Integer[]>> T;
 
     /**
      * Constructor for the QBFPT class.
@@ -42,7 +41,7 @@ public class QBFPT extends QBF {
      * 
      * @return {@link #T}.
      */
-    public Set<List<Integer>> getT() { return T; };
+    public ArrayList<List<Integer[]>> getT() { return T; };
     
     /**
      * Generates the prohibited triples set T, where:
@@ -50,11 +49,16 @@ public class QBFPT extends QBF {
      *  
      * @return The prohibited triples.
      */
-    private Set<List<Integer>> generateTriples() {
+    private ArrayList<List<Integer[]>> generateTriples() {
 
-        Set<List<Integer>> _T = new HashSet<List<Integer>>();
+        ArrayList<List<Integer[]>> _T = new ArrayList<List<Integer[]>>(size);
         Integer[] triple;
 
+        // Initializing.
+        for(int u=0; u<size; u++) {
+        	_T.add(new ArrayList<Integer[]>());
+        }
+        
         /* 
          * NOTE: 
          * u ∈ [1, n], which is relevant to generate a triple, but we are
@@ -62,9 +66,9 @@ public class QBFPT extends QBF {
          * triple element into other arrays (e.g., A, variables).
          */
         for (int u = 1; u <= size; u++) {
-            triple = new Integer[] {u, g(u), h(u)};
+            triple = new Integer[] {u-1, g(u)-1, h(u)-1};
             Arrays.sort(triple);
-            _T.add((List<Integer>)Arrays.asList(triple));
+            _T.get(u-1).add(triple);
         }
 
         return _T;
