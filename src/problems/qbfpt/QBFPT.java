@@ -68,7 +68,7 @@ public class QBFPT extends QBF {
         for (int u = 1; u <= size; u++) {
             triple = new Integer[] {u-1, g(u)-1, h(u)-1};
             Arrays.sort(triple);
-            _T.get(u-1).add(triple);
+            _T.get(triple[0]).add(triple);
         }
 
         return _T;

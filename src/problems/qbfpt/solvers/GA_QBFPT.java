@@ -122,7 +122,7 @@ public class GA_QBFPT extends GA_QBF {
                 
     	for (Integer e : sol) {
     		for(Integer[] t : T.get(e)) {
-    			if(_sol.contains(t[0]) && _sol.contains(t[1]) && _sol.contains(t[2])) {
+    			if(_sol.contains(t[1]) && _sol.contains(t[2])) {
     				feasible = false;
     				break;
     			}
