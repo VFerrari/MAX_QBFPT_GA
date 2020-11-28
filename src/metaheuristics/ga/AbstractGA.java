@@ -353,7 +353,7 @@ public abstract class AbstractGA<G extends Number, F> {
 
 			if (divMaintenance) {
 				ArrayList<Integer> possibleCrosspoints;
-				possibleCrosspoints = xor_operation(parent1, parent2);
+				possibleCrosspoints = xorOperation(parent1, parent2);
 				if (possibleCrosspoints.size() >= 2){
 					Collections.shuffle(possibleCrosspoints, rng);
 					int k = rng.nextInt(possibleCrosspoints.size());
@@ -393,7 +393,7 @@ public abstract class AbstractGA<G extends Number, F> {
 	 * 			  Representing parent2
 	 * @return An arraylist of possible crossover points
 	 */
-	protected ArrayList<Integer> xor_operation(Chromosome parent1, Chromosome parent2) {
+	protected ArrayList<Integer> xorOperation(Chromosome parent1, Chromosome parent2) {
 		ArrayList<Integer> possiblePoints = new ArrayList<Integer>();
 		for (int i=0; i < parent1.size(); i++){
 			if (parent1.get(i) != parent2.get(i)){
