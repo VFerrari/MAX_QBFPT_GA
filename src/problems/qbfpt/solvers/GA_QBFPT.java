@@ -176,7 +176,6 @@ public class GA_QBFPT extends GA_QBF {
 
 		Solution<Integer> bestSol = ga.solve(maxTime);
 		System.out.println("maxVal = " + bestSol);
-
 		long endTime = System.currentTimeMillis();
 		long totalTime = endTime - startTime;
 		System.out.println("Time = " + (double) totalTime / (double) 1000 + " seg");
@@ -220,18 +219,16 @@ public class GA_QBFPT extends GA_QBF {
 		Integer popSize1 = 100, popSize2 = 50; 
 		Double mutationRate1 = 0.01, mutationRate2 = -1.0;
 		
-		// Testing
-		GA_QBFPT.run(generations, popSize1, mutationRate1, 
-					 "instances/qbf200",
-					 populationReplacement.ELITE,
-					 true, maxTime);
-		
-		/*
+//		// Testing
+//		GA_QBFPT.testAll(generations, popSize2, mutationRate1,
+//					 populationReplacement.STSTATE,
+//					 false, maxTime);
+
 		// 1 - Testing pop1/mut1/elitism/no div
 		GA_QBFPT.testAll(generations, popSize1, mutationRate1,
 						 populationReplacement.ELITE,
 						 false, maxTime);
-		
+
 		// 2 - Testing pop1/mut1/ststate/no div
 		GA_QBFPT.testAll(generations, popSize1, mutationRate1,
 						 populationReplacement.STSTATE,
@@ -246,11 +243,21 @@ public class GA_QBFPT extends GA_QBF {
 		GA_QBFPT.testAll(generations, popSize2, mutationRate1,
 				 		 populationReplacement.STSTATE,
 				 		 true, maxTime);
-		
+
 		// 5 - Testing pop1/mut2/ststate/div
 		GA_QBFPT.testAll(generations, popSize1, mutationRate2,
 				 		 populationReplacement.STSTATE,
 				 		 true, maxTime);
-		*/
+
+		// 6 - Testing pop2/mut2/elitism/no div
+		GA_QBFPT.testAll(generations, popSize2, mutationRate2,
+				populationReplacement.ELITE,
+				false, maxTime);
+
+		// 7 - Testing pop2/mut2/ststate/div
+		GA_QBFPT.testAll(generations, popSize2, mutationRate2,
+				populationReplacement.STSTATE,
+				true, maxTime);
+
 	}
 }
